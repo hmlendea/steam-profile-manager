@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Security.Authentication;
 
-using SteamKit2;
-
-using SteamFriend = SteamKit2.SteamFriends.FriendsListCallback.Friend;
+using SK = SteamKit2;
 
 namespace SteamProfileManager
 {
-    // TODO: Choose a proper name
-    public class MySteamClient
+    public class SteamClient
     {
-        SteamClient client;
-        CallbackManager manager;
+        SK.SteamClient client;
+        SK.CallbackManager manager;
 
-        SteamUser user;
-        SteamFriends community;
+        SK.SteamUser user;
+        SK.SteamFriends community;
 
         // TODO: Create entities for some of these
         public string AccountUsername { get; private set; }
         protected string AccountPassword { get; private set; }
-        public SteamID AccountId { get; private set; }
+        public SK.SteamID AccountId { get; private set; }
         public string UserAlias { get; private set; }
 
         public bool IsRunning { get; private set; }
@@ -35,23 +32,23 @@ namespace SteamProfileManager
             AccountUsername = username;
             AccountPassword = password;
 
-            client = new SteamClient();
+            client = new SK.SteamClient();
 
-            manager = new CallbackManager(client);
+            manager = new SK.CallbackManager(client);
 
-            user = client.GetHandler<SteamUser>();
-            community = client.GetHandler<SteamFriends>();
+            user = client.GetHandler<SK.SteamUser>();
+            community = client.GetHandler<SK.SteamFriends>();
 
-            manager.Subscribe<SteamClient.ConnectedCallback>(OnConnected);
-            manager.Subscribe<SteamClient.DisconnectedCallback>(OnDisconnected);
+            manager.Subscribe<SK.SteamClient.ConnectedCallback>(OnConnected);
+            manager.Subscribe<SK.SteamClient.DisconnectedCallback>(OnDisconnected);
 
-            manager.Subscribe<SteamUser.LoggedOnCallback>(OnLoggedOn);
-            manager.Subscribe<SteamUser.LoggedOffCallback>(OnLoggedOff);
+            manager.Subscribe<SK.SteamUser.LoggedOnCallback>(OnLoggedOn);
+            manager.Subscribe<SK.SteamUser.LoggedOffCallback>(OnLoggedOff);
 
-            manager.Subscribe<SteamUser.AccountInfoCallback>(OnAccountInfo);
-            manager.Subscribe<SteamFriends.FriendsListCallback>(OnFriendsList);
-            manager.Subscribe<SteamFriends.PersonaStateCallback>(OnPersonaState);
-            manager.Subscribe<SteamFriends.FriendAddedCallback>(OnFriendAdded);
+            manager.Subscribe<SK.SteamUser.AccountInfoCallback>(OnAccountInfo);
+            manager.Subscribe<SK.SteamFriends.FriendsListCallback>(OnFriendsList);
+            manager.Subscribe<SK.SteamFriends.PersonaStateCallback>(OnPersonaState);
+            manager.Subscribe<SK.SteamFriends.FriendAddedCallback>(OnFriendAdded);
 
             IsRunning = true;
             client.Connect();
@@ -67,9 +64,9 @@ namespace SteamProfileManager
             user.LogOff();
         }
 
-        void OnConnected(SteamClient.ConnectedCallback callback)
+        void OnConnected(SK.SteamClient.ConnectedCallback callback)
         {
-            user.LogOn(new SteamUser.LogOnDetails
+            user.LogOn(new SK.SteamUser.LogOnDetails
             {
                 Username = AccountUsername,
                 Password = AccountPassword,
@@ -78,19 +75,19 @@ namespace SteamProfileManager
             Connected?.Invoke(this, null);
         }
 
-        void OnDisconnected(SteamClient.DisconnectedCallback callback)
+        void OnDisconnected(SK.SteamClient.DisconnectedCallback callback)
         {
             IsRunning = false;
             Disconnected?.Invoke(this, null);
         }
 
-        void OnLoggedOn(SteamUser.LoggedOnCallback callback)
+        void OnLoggedOn(SK.SteamUser.LoggedOnCallback callback)
         {
-            if (callback.Result != EResult.OK)
+            if (callback.Result != SK.EResult.OK)
             {
                 IsRunning = false;
 
-                if (callback.Result == EResult.AccountLogonDenied)
+                if (callback.Result == SK.EResult.AccountLogonDenied)
                 {
                     throw new AuthenticationException("Unable to logon to Steam: This account is SteamGuard protected.");
                 }
@@ -103,37 +100,37 @@ namespace SteamProfileManager
             LoggedIn?.Invoke(this, null);
         }
 
-        void OnLoggedOff(SteamUser.LoggedOffCallback callback)
+        void OnLoggedOff(SK.SteamUser.LoggedOffCallback callback)
         {
             LoggedOut?.Invoke(this, null);
         }
 
-        void OnAccountInfo(SteamUser.AccountInfoCallback callback)
+        void OnAccountInfo(SK.SteamUser.AccountInfoCallback callback)
         {
-            community.SetPersonaState(EPersonaState.Online);
+            community.SetPersonaState(SK.EPersonaState.Online);
         }
 
-        void OnFriendsList(SteamFriends.FriendsListCallback callback)
+        void OnFriendsList(SK.SteamFriends.FriendsListCallback callback)
         {
             Console.WriteLine($"We have {callback.FriendList.Count} friends");
 
-            foreach (SteamFriend friend in callback.FriendList)
+            foreach (SK.SteamFriends.FriendsListCallback.Friend friend in callback.FriendList)
             {
                 string friendName = community.GetFriendPersonaName(friend.SteamID);
 
-                if (friend.Relationship == EFriendRelationship.RequestRecipient)
+                if (friend.Relationship == SK.EFriendRelationship.RequestRecipient)
                 {
                     Console.WriteLine($"Pending friend request: {friendName}");
                 }
             }
         }
 
-        void OnFriendAdded(SteamFriends.FriendAddedCallback callback)
+        void OnFriendAdded(SK.SteamFriends.FriendAddedCallback callback)
         {
             Console.WriteLine($"New friend: {callback.PersonaName}");
         }
 
-        void OnPersonaState(SteamFriends.PersonaStateCallback callback)
+        void OnPersonaState(SK.SteamFriends.PersonaStateCallback callback)
         {
             if (callback.FriendID == AccountId)
             {

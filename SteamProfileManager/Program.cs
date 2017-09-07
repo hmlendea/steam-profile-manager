@@ -4,7 +4,7 @@ namespace SteamProfileManager
 {
     class Program
     {
-        static MySteamClient client;
+        static SteamClient client;
 
         static void Main(string[] args)
         {
@@ -16,7 +16,7 @@ namespace SteamProfileManager
             string username = args[0];
             string password = args[1];
 
-            client = new MySteamClient();
+            client = new SteamClient();
 
             RegisterEvents();
 
