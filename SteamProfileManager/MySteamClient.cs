@@ -7,6 +7,7 @@ using SteamFriend = SteamKit2.SteamFriends.FriendsListCallback.Friend;
 
 namespace SteamProfileManager
 {
+    // TODO: Choose a proper name
     public class MySteamClient
     {
         SteamClient client;
@@ -15,6 +16,7 @@ namespace SteamProfileManager
         SteamUser user;
         SteamFriends community;
 
+        // TODO: Create entities for some of these
         public string AccountUsername { get; private set; }
         protected string AccountPassword { get; private set; }
         public SteamID AccountId { get; private set; }
@@ -22,6 +24,7 @@ namespace SteamProfileManager
 
         public bool IsRunning { get; private set; }
 
+        // TODO: Use custom event handlers
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler LoggedIn;
