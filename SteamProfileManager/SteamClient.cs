@@ -168,6 +168,7 @@ namespace SteamProfileManager
 
             CurrentUser.SteamId = steamUser.SteamID.ToString();
             CurrentUser.AccountId = (int)steamUser.SteamID.AccountID;
+            CurrentUser.IsScammer = GetScammerStatus(CurrentUser.SteamId);
 
             LoggedIn?.Invoke(this, null);
         }
