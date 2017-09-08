@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 
 using SteamProfileManager.Models;
 
 using SK = SteamKit2;
+
+using SteamFriend = SteamKit2.SteamFriends.FriendsListCallback.Friend;
 
 namespace SteamProfileManager
 {
@@ -23,6 +27,8 @@ namespace SteamProfileManager
         protected string Password { get; private set; }
         protected string AuthenticationCode { get; private set; }
 
+        public List<SteamUser> Friends { get; private set; }
+
         public bool IsConnected { get; private set; }
 
         // TODO: Use custom event handlers
@@ -30,6 +36,11 @@ namespace SteamProfileManager
         public event EventHandler Disconnected;
         public event EventHandler LoggedIn;
         public event EventHandler LoggedOut;
+
+        public SteamClient()
+        {
+            Friends = new List<SteamUser>();
+        }
 
         public void LogIn(string username, string password)
         {
@@ -154,17 +165,28 @@ namespace SteamProfileManager
 
         void OnFriendsList(SK.SteamFriends.FriendsListCallback callback)
         {
-            Console.WriteLine($"We have {callback.FriendList.Count} friends");
-
-            foreach (SK.SteamFriends.FriendsListCallback.Friend friend in callback.FriendList)
+            foreach (SteamFriend friend in callback.FriendList)
             {
-                string friendName = community.GetFriendPersonaName(friend.SteamID);
+                SteamUser friendUser = new SteamUser
+                {
+                    AccountId = (int)friend.SteamID.AccountID,
+                    Name = community.GetFriendPersonaName(friend.SteamID)
+                };
+
+                if (friendUser.Name == "[unknown]")
+                {
+                    continue;
+                }
+
+                Friends.Add(friendUser);
 
                 if (friend.Relationship == SK.EFriendRelationship.RequestRecipient)
                 {
-                    Console.WriteLine($"Pending friend request: {friendName}");
+                    Console.WriteLine($"Pending friend request: {friendUser.Name}");
                 }
             }
+
+            Console.WriteLine($"We have {Friends.Count} friends");
         }
 
         void OnFriendAdded(SK.SteamFriends.FriendAddedCallback callback)
