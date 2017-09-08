@@ -8,20 +8,35 @@ namespace SteamProfileManager
 
         static void Main(string[] args)
         {
-            if (args.Length != 2)
+            if (args.Length < 2)
             {
-                throw new ArgumentException("Exactly two arguments must be sent to this application (Username and Password)");
+                throw new ArgumentException("At least two arguments must be sent to this application (Username and Password)");
             }
 
             string username = args[0];
             string password = args[1];
+            string authCode = null;
+            string twoFactorAuth = null;
+
+            if (args.Length == 3)
+            {
+                authCode = args[2];
+            }
 
             client = new SteamClient();
 
             RegisterEvents();
 
             Console.WriteLine("Connecting to Steam");
-            client.LogIn(username, password);
+
+            if (string.IsNullOrEmpty(authCode))
+            {
+                client.LogIn(username, password);
+            }
+            else
+            {
+                client.LogIn(username, password, authCode);
+            }
 
             Console.ReadKey();
         }
