@@ -20,7 +20,7 @@ namespace SteamProfileManager
 
             RegisterEvents();
 
-            Console.WriteLine("Connecting to Steam...");
+            Console.WriteLine("Connecting to Steam");
             client.LogIn(username, password);
 
             Console.ReadKey();
@@ -36,7 +36,7 @@ namespace SteamProfileManager
 
         static void OnClientConnected(object sender, EventArgs e)
         {
-            Console.WriteLine($"Connected to Steam!");
+            Console.WriteLine($"Connected to Steam");
         }
 
         static void OnClientDisconnected(object sender, EventArgs e)
@@ -46,12 +46,12 @@ namespace SteamProfileManager
 
         static void OnClientLoggedIn(object sender, EventArgs e)
         {
-            Console.WriteLine($"Logged in to Steam! (SteamID: {client.AccountId})");
+            Console.WriteLine($"Logged in to Steam. (SteamID: {client.CurrentUser.AccountId})");
         }
 
         static void OnClientLoggedOut(object sender, EventArgs e)
         {
-            Console.WriteLine($"Logged out of Steam: {client.AccountId}");
+            Console.WriteLine($"Logged out of Steam: {client.CurrentUser.AccountId}");
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security.Authentication;
 
+using SteamProfileManager.Models;
+
 using SK = SteamKit2;
 
 namespace SteamProfileManager
@@ -12,14 +14,12 @@ namespace SteamProfileManager
 
         SK.SteamUser user;
         SK.SteamFriends community;
+        
+        public SteamUser CurrentUser { get; private set; }
 
-        // TODO: Create entities for some of these
-        public string AccountUsername { get; private set; }
-        protected string AccountPassword { get; private set; }
-        public SK.SteamID AccountId { get; private set; }
-        public string UserAlias { get; private set; }
-
-        public bool IsRunning { get; private set; }
+        public string Username { get; private set; }
+        protected string Password { get; private set; }
+        public bool IsConnected { get; private set; }
 
         // TODO: Use custom event handlers
         public event EventHandler Connected;
@@ -29,10 +29,11 @@ namespace SteamProfileManager
 
         public void LogIn(string username, string password)
         {
-            AccountUsername = username;
-            AccountPassword = password;
+            Username = username;
+            Password = password;
 
             client = new SK.SteamClient();
+            CurrentUser = new SteamUser();
 
             manager = new SK.CallbackManager(client);
 
@@ -50,10 +51,10 @@ namespace SteamProfileManager
             manager.Subscribe<SK.SteamFriends.PersonaStateCallback>(OnPersonaState);
             manager.Subscribe<SK.SteamFriends.FriendAddedCallback>(OnFriendAdded);
 
-            IsRunning = true;
+            IsConnected = true;
             client.Connect();
 
-            while (IsRunning)
+            while (IsConnected)
             {
                 manager.RunWaitCallbacks(TimeSpan.FromSeconds(1));
             }
@@ -68,8 +69,8 @@ namespace SteamProfileManager
         {
             user.LogOn(new SK.SteamUser.LogOnDetails
             {
-                Username = AccountUsername,
-                Password = AccountPassword,
+                Username = Username,
+                Password = Password,
             });
 
             Connected?.Invoke(this, null);
@@ -77,7 +78,7 @@ namespace SteamProfileManager
 
         void OnDisconnected(SK.SteamClient.DisconnectedCallback callback)
         {
-            IsRunning = false;
+            IsConnected = false;
             Disconnected?.Invoke(this, null);
         }
 
@@ -85,7 +86,7 @@ namespace SteamProfileManager
         {
             if (callback.Result != SK.EResult.OK)
             {
-                IsRunning = false;
+                IsConnected = false;
 
                 if (callback.Result == SK.EResult.AccountLogonDenied)
                 {
@@ -94,8 +95,8 @@ namespace SteamProfileManager
 
                 throw new AuthenticationException($"Unable to logon to Steam: {callback.Result} / {callback.ExtendedResult}");
             }
-
-            AccountId = user.SteamID;
+            
+            CurrentUser.AccountId = (int)user.SteamID.AccountID;
 
             LoggedIn?.Invoke(this, null);
         }
@@ -132,9 +133,9 @@ namespace SteamProfileManager
 
         void OnPersonaState(SK.SteamFriends.PersonaStateCallback callback)
         {
-            if (callback.FriendID == AccountId)
+            if (callback.FriendID.AccountID == CurrentUser.AccountId)
             {
-                UserAlias = community.GetPersonaName();
+                CurrentUser.Name = community.GetPersonaName();
             }
         }
     }
