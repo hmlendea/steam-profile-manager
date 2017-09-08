@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 
@@ -18,7 +19,7 @@ namespace SteamProfileManager
         SK.SteamClient client;
         SK.CallbackManager manager;
 
-        SK.SteamUser user;
+        SK.SteamUser steamUser;
         SK.SteamFriends community;
 
         public SteamUser CurrentUser { get; private set; }
@@ -52,7 +53,7 @@ namespace SteamProfileManager
 
             manager = new SK.CallbackManager(client);
 
-            user = client.GetHandler<SK.SteamUser>();
+            steamUser = client.GetHandler<SK.SteamUser>();
             community = client.GetHandler<SK.SteamFriends>();
 
             manager.Subscribe<SK.SteamClient.ConnectedCallback>(OnConnected);
@@ -84,7 +85,7 @@ namespace SteamProfileManager
 
         public void LogOff()
         {
-            user.LogOff();
+            steamUser.LogOff();
         }
 
         byte[] GetSentryHash()
@@ -98,6 +99,23 @@ namespace SteamProfileManager
             }
 
             return sentryHash;
+        }
+
+        bool GetScammerStatus(string steamId)
+        {
+            string result = string.Empty;
+            string url = $"http://steamrep.com/id2rep.php?steamID32={steamId}";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                result = reader.ReadToEnd();
+            }
+
+            return result.Contains("SCAMMER");
         }
 
         void OnConnected(SK.SteamClient.ConnectedCallback callback)
@@ -115,7 +133,7 @@ namespace SteamProfileManager
                 loginDetails.SentryFileHash = GetSentryHash();
             }
 
-            user.LogOn(loginDetails);
+            steamUser.LogOn(loginDetails);
 
             Connected?.Invoke(this, null);
         }
@@ -148,7 +166,8 @@ namespace SteamProfileManager
                 throw new AuthenticationException($"Unable to logon to Steam: {callback.Result} / {callback.ExtendedResult}");
             }
 
-            CurrentUser.AccountId = (int)user.SteamID.AccountID;
+            CurrentUser.SteamId = steamUser.SteamID.ToString();
+            CurrentUser.AccountId = (int)steamUser.SteamID.AccountID;
 
             LoggedIn?.Invoke(this, null);
         }
@@ -169,8 +188,11 @@ namespace SteamProfileManager
             {
                 SteamUser friendUser = new SteamUser
                 {
+                    SteamId = friend.SteamID.ToString(),
                     AccountId = (int)friend.SteamID.AccountID,
-                    Name = community.GetFriendPersonaName(friend.SteamID)
+                    Name = community.GetFriendPersonaName(friend.SteamID),
+                    IsOnline = community.GetFriendPersonaState(friend.SteamID) != 0,
+                    IsScammer = GetScammerStatus(friend.SteamID.ToString())
                 };
 
                 if (friendUser.Name == "[unknown]")
@@ -186,7 +208,9 @@ namespace SteamProfileManager
                 }
             }
 
-            Console.WriteLine($"We have {Friends.Count} friends");
+            int onlineFriendsCount = Friends.Count(f => f.IsOnline);
+
+            Console.WriteLine($"We have {Friends.Count} friends ({onlineFriendsCount} online)");
         }
 
         void OnFriendAdded(SK.SteamFriends.FriendAddedCallback callback)
@@ -196,9 +220,37 @@ namespace SteamProfileManager
 
         void OnPersonaState(SK.SteamFriends.PersonaStateCallback callback)
         {
-            if (callback.FriendID.AccountID == CurrentUser.AccountId)
+            SteamUser user;
+
+            if (callback.FriendID.ToString() == CurrentUser.SteamId)
             {
-                CurrentUser.Name = community.GetPersonaName();
+                user = CurrentUser;
+            }
+            else
+            {
+                user = Friends.FirstOrDefault(f => f.SteamId == callback.FriendID.ToString());
+            }
+
+            if (user == null)
+            {
+                return;
+            }
+
+            bool newStatus = (callback.State != 0);
+
+            user.Name = community.GetPersonaName();
+            user.LastOnlineDate = new DateTime(Math.Max(callback.LastLogOn.Ticks, callback.LastLogOff.Ticks));
+
+            if (user.IsOnline != newStatus)
+            {
+                if (newStatus == true)
+                {
+                    Console.WriteLine($"User '{user.Name}' is now online");
+                }
+                else
+                {
+                    Console.WriteLine($"User '{user.Name}' is now offline");
+                }
             }
         }
 
@@ -223,7 +275,7 @@ namespace SteamProfileManager
             }
 
             // inform the steam servers that we're accepting this sentry file
-            user.SendMachineAuthResponse(new SK.SteamUser.MachineAuthDetails
+            steamUser.SendMachineAuthResponse(new SK.SteamUser.MachineAuthDetails
             {
                 JobID = callback.JobID,
                 FileName = callback.FileName,
