@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SteamProfileManager
@@ -68,6 +69,7 @@ namespace SteamProfileManager
             client.Disconnected += OnClientDisconnected;
             client.LoggedIn += OnClientLoggedIn;
             client.LoggedOut += OnClientLoggedOut;
+            client.CommunityLoaded += OnClientCommunityLoaded;
         }
 
         static void OnClientConnected(object sender, EventArgs e)
@@ -88,6 +90,13 @@ namespace SteamProfileManager
         static void OnClientLoggedOut(object sender, EventArgs e)
         {
             Console.WriteLine($"Logged out of Steam: {client.CurrentUser.SteamId.SteamId64}");
+        }
+
+        static void OnClientCommunityLoaded(object sender, EventArgs e)
+        {
+            int onlineFriendsCount = client.Friends.Count(f => f.IsOnline);
+
+            Console.WriteLine($"We have {client.Friends.Count} friends ({onlineFriendsCount} online)");
         }
     }
 }

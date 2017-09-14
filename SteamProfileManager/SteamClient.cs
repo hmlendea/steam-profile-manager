@@ -41,6 +41,7 @@ namespace SteamProfileManager
         public event EventHandler Disconnected;
         public event EventHandler LoggedIn;
         public event EventHandler LoggedOut;
+        public event EventHandler CommunityLoaded;
 
         public SteamClient()
         {
@@ -67,7 +68,7 @@ namespace SteamProfileManager
             manager.Subscribe<SK.SteamUser.LoggedOffCallback>(OnLoggedOff);
 
             manager.Subscribe<SK.SteamUser.AccountInfoCallback>(OnAccountInfo);
-            manager.Subscribe<SK.SteamFriends.FriendsListCallback>(OnFriendsList);
+            manager.Subscribe<SK.SteamFriends.FriendsListCallback>(OnCommunityLoaded);
             manager.Subscribe<SK.SteamFriends.PersonaStateCallback>(OnPersonaState);
             manager.Subscribe<SK.SteamFriends.FriendAddedCallback>(OnFriendAdded);
 
@@ -241,7 +242,7 @@ namespace SteamProfileManager
             community.SetPersonaState(SK.EPersonaState.Online);
         }
 
-        void OnFriendsList(SK.SteamFriends.FriendsListCallback callback)
+        void OnCommunityLoaded(SK.SteamFriends.FriendsListCallback callback)
         {
             foreach (SteamFriend friend in callback.FriendList)
             {
@@ -269,7 +270,7 @@ namespace SteamProfileManager
 
             int onlineFriendsCount = Friends.Count(f => f.IsOnline);
 
-            Console.WriteLine($"We have {Friends.Count} friends ({onlineFriendsCount} online)");
+            CommunityLoaded?.Invoke(this, null);
         }
 
         void OnFriendAdded(SK.SteamFriends.FriendAddedCallback callback)
@@ -311,6 +312,8 @@ namespace SteamProfileManager
                 {
                     Console.WriteLine($"User '{user.Name}' is now offline");
                 }
+
+                user.IsOnline = newStatus;
             }
         }
 
