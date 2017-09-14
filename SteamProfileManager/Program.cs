@@ -70,6 +70,7 @@ namespace SteamProfileManager
             client.LoggedIn += OnClientLoggedIn;
             client.LoggedOut += OnClientLoggedOut;
             client.CommunityLoaded += OnClientCommunityLoaded;
+            client.ClientFullyLoaded += OnClientFullyLoaded;
         }
 
         static void OnClientConnected(object sender, EventArgs e)
@@ -97,6 +98,11 @@ namespace SteamProfileManager
             int onlineFriendsCount = client.Friends.Count(f => f.IsOnline);
 
             Console.WriteLine($"We have {client.Friends.Count} friends ({onlineFriendsCount} online)");
+        }
+
+        static void OnClientFullyLoaded(object sender, EventArgs e)
+        {
+            Console.WriteLine($"Client fully loaded");
         }
     }
 }

@@ -42,6 +42,7 @@ namespace SteamProfileManager
         public event EventHandler LoggedIn;
         public event EventHandler LoggedOut;
         public event EventHandler CommunityLoaded;
+        public event EventHandler ClientFullyLoaded;
 
         public SteamClient()
         {
@@ -285,6 +286,12 @@ namespace SteamProfileManager
             if (callback.FriendID.ToString() == CurrentUser.SteamId.SteamId32)
             {
                 user = CurrentUser;
+
+                // TODO: This check here is not properly done. Rethink.
+                if (user.Name == null)
+                {
+                    ClientFullyLoaded?.Invoke(this, null);
+                }
             }
             else
             {
