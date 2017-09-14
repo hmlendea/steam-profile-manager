@@ -82,12 +82,12 @@ namespace SteamProfileManager
 
         static void OnClientLoggedIn(object sender, EventArgs e)
         {
-            Console.WriteLine($"Logged in to Steam. (SteamID: {client.CurrentUser.AccountId})");
+            Console.WriteLine($"Logged in to Steam. (SteamID: {client.CurrentUser.SteamId.SteamId64})");
         }
 
         static void OnClientLoggedOut(object sender, EventArgs e)
         {
-            Console.WriteLine($"Logged out of Steam: {client.CurrentUser.AccountId}");
+            Console.WriteLine($"Logged out of Steam: {client.CurrentUser.SteamId.SteamId64}");
         }
     }
 }

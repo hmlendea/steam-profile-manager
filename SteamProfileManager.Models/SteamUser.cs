@@ -4,9 +4,7 @@ namespace SteamProfileManager.Models
 {
     public class SteamUser
     {
-        public string SteamId { get; set; }
-
-        public int AccountId { get; set; }
+        public SteamUserId SteamId { get; set; }
 
         public string Name { get; set; }
 

@@ -121,10 +121,10 @@ namespace SteamProfileManager
             return sentryHash;
         }
 
-        bool GetScammerStatus(string steamId)
+        bool GetScammerStatus(string steamId32)
         {
             string result = string.Empty;
-            string url = $"http://steamrep.com/id2rep.php?steamID32={steamId}";
+            string url = $"http://steamrep.com/id2rep.php?steamID32={steamId32}";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
@@ -223,9 +223,8 @@ namespace SteamProfileManager
                 throw new AuthenticationException($"Unable to logon to Steam: {callback.Result} / {callback.ExtendedResult}");
             }
 
-            CurrentUser.SteamId = steamUser.SteamID.ToString();
-            CurrentUser.AccountId = (int)steamUser.SteamID.AccountID;
-            CurrentUser.IsScammer = GetScammerStatus(CurrentUser.SteamId);
+            CurrentUser.SteamId = new SteamUserId(steamUser.SteamID);
+            CurrentUser.IsScammer = GetScammerStatus(CurrentUser.SteamId.SteamId32);
 
             LoggedIn?.Invoke(this, null);
         }
@@ -246,8 +245,7 @@ namespace SteamProfileManager
             {
                 SteamUser friendUser = new SteamUser
                 {
-                    SteamId = friend.SteamID.ToString(),
-                    AccountId = (int)friend.SteamID.AccountID,
+                    SteamId = new SteamUserId(friend.SteamID),
                     Name = community.GetFriendPersonaName(friend.SteamID),
                     IsOnline = community.GetFriendPersonaState(friend.SteamID) != 0,
                     IsScammer = GetScammerStatus(friend.SteamID.ToString())
@@ -280,13 +278,13 @@ namespace SteamProfileManager
         {
             SteamUser user;
 
-            if (callback.FriendID.ToString() == CurrentUser.SteamId)
+            if (callback.FriendID.ToString() == CurrentUser.SteamId.SteamId32)
             {
                 user = CurrentUser;
             }
             else
             {
-                user = Friends.FirstOrDefault(f => f.SteamId == callback.FriendID.ToString());
+                user = Friends.FirstOrDefault(f => f.SteamId.SteamId32 == callback.FriendID.ToString());
             }
 
             if (user == null)
