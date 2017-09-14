@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security.Authentication;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 using SteamProfileManager.Models;
 
@@ -27,6 +29,8 @@ namespace SteamProfileManager
         public string Username { get; private set; }
         protected string Password { get; private set; }
         protected string AuthenticationCode { get; private set; }
+        protected string WebSteamLogin { get; private set; }
+        protected string WebSessionId { get; private set; }
 
         public List<SteamUser> Friends { get; private set; }
 
@@ -83,6 +87,22 @@ namespace SteamProfileManager
             LogIn(username, password);
         }
 
+        public void LogIn(string username, string password, string webSteamLogin, string webSessionId)
+        {
+            WebSteamLogin = webSteamLogin;
+            WebSessionId = webSessionId;
+
+            LogIn(username, password);
+        }
+
+        public void LogIn(string username, string password, string authCode, string webSteamLogin, string webSessionId)
+        {
+            WebSteamLogin = webSteamLogin;
+            WebSessionId = webSessionId;
+
+            LogIn(username, password, authCode);
+        }
+
         public void LogOff()
         {
             steamUser.LogOff();
@@ -116,6 +136,43 @@ namespace SteamProfileManager
             }
 
             return result.Contains("SCAMMER");
+        }
+
+        public async Task<string> SetAvatar(string filePath)
+        {
+            Uri uri = new Uri("http://steamcommunity.com/actions/FileUploader");
+            HttpClientHandler handler = new HttpClientHandler()
+            {
+                CookieContainer = new CookieContainer()
+            };
+            handler.CookieContainer.Add(uri, new Cookie("steamLogin", WebSteamLogin)); // Adding cookies
+            handler.CookieContainer.Add(uri, new Cookie("sessionid", WebSessionId));
+
+            byte[] img = File.ReadAllBytes(filePath);
+
+            HttpClient httpClient = new HttpClient(handler);
+            MultipartFormDataContent form = new MultipartFormDataContent
+            {
+                { new StringContent("1048576"), "\"MAX_FILE_SIZE\"" },
+                { new StringContent("player_avatar_image"), "\"type\"" },
+                { new StringContent(steamUser.SteamID.ConvertToUInt64().ToString()), "\"sId\"" },
+                { new StringContent(WebSessionId), "\"sessionid\"" },
+                { new StringContent("1"), "\"doSub\"" },
+                { new StringContent("1"), "\"json\"" },
+                { new ByteArrayContent(img, 0, img.Count()), "\"avatar\"", "\"avatar.png\"" }
+            };
+
+            try
+            {
+                HttpResponseMessage response = await httpClient.PostAsync(uri, form);
+                response.EnsureSuccessStatusCode();
+                httpClient.Dispose();
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
         }
 
         void OnConnected(SK.SteamClient.ConnectedCallback callback)

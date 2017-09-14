@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace SteamProfileManager
 {
@@ -16,11 +17,23 @@ namespace SteamProfileManager
             string username = args[0];
             string password = args[1];
             string authCode = null;
-            string twoFactorAuth = null;
+            string webSteamLogin = null;
+            string webSessionId = null;
 
             if (args.Length == 3)
             {
                 authCode = args[2];
+            }
+
+            if (args.Length == 4)
+            {
+                webSteamLogin = args[2];
+                webSessionId = args[3];
+            }
+            else if (args.Length == 5)
+            {
+                webSteamLogin = args[3];
+                webSessionId = args[4];
             }
 
             client = new SteamClient();
@@ -29,13 +42,21 @@ namespace SteamProfileManager
 
             Console.WriteLine("Connecting to Steam");
 
-            if (string.IsNullOrEmpty(authCode))
+            if (!string.IsNullOrEmpty(authCode) && string.IsNullOrEmpty(webSteamLogin))
             {
-                client.LogIn(username, password);
+                client.LogIn(username, password, authCode);
+            }
+            else if (string.IsNullOrEmpty(authCode) && !string.IsNullOrEmpty(webSteamLogin))
+            {
+                client.LogIn(username, password, webSteamLogin, webSessionId);
+            }
+            else if (!string.IsNullOrEmpty(authCode) && !string.IsNullOrEmpty(webSteamLogin))
+            {
+                client.LogIn(username, password, authCode, webSteamLogin, webSessionId);
             }
             else
             {
-                client.LogIn(username, password, authCode);
+                client.LogIn(username, password);
             }
 
             Console.ReadKey();
