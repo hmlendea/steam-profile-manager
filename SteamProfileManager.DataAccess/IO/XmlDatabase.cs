@@ -44,6 +44,7 @@ namespace SteamProfileManager.DataAccess.IO
             }
             catch (Exception ex)
             {
+                /*
                 LogManager.Instance.Error(LogBuilder.BuildKvpMessage(
                     Operation.RepositoryLoading,
                     OperationStatus.Failure,
@@ -52,6 +53,7 @@ namespace SteamProfileManager.DataAccess.IO
                         { LogInfoKey.FileName, FileName },
                         { LogInfoKey.Message, "The repository cannot be accessed" }
                     }), ex);
+                    */
             }
 
             return entities;
@@ -75,6 +77,7 @@ namespace SteamProfileManager.DataAccess.IO
             }
             catch (Exception ex)
             {
+                /*
                 LogManager.Instance.Error(LogBuilder.BuildKvpMessage(
                     Operation.RepositorySaving,
                     OperationStatus.Failure,
@@ -83,6 +86,7 @@ namespace SteamProfileManager.DataAccess.IO
                         { LogInfoKey.FileName, FileName },
                         { LogInfoKey.Message, "The repository cannot be accessed" }
                     }), ex);
+                    */
             }
         }
     }
