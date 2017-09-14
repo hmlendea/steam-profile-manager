@@ -5,8 +5,10 @@ namespace SteamProfileManager.Models
 {
     public class ProfileEvent
     {
-        IProfileAction Action { get; set; }
+        public string Id { get; set; }
 
-        IProfileTrigger Trigger { get; set; }
+        public IProfileAction Action { get; set; }
+
+        public IProfileTrigger Trigger { get; set; }
     }
 }
