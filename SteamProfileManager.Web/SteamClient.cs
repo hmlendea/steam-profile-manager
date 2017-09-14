@@ -14,7 +14,7 @@ using SK = SteamKit2;
 
 using SteamFriend = SteamKit2.SteamFriends.FriendsListCallback.Friend;
 
-namespace SteamProfileManager
+namespace SteamProfileManager.Web
 {
     public class SteamClient
     {

@@ -7,7 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamProfileManager", "Stea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamProfileManager.Models", "SteamProfileManager.Models\SteamProfileManager.Models.csproj", "{DCB7963B-8AE8-4401-A6C1-15AE361F7582}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamProfileManager.DataAccess", "SteamProfileManager.DataAccess\SteamProfileManager.DataAccess.csproj", "{C6C55E74-47F3-46E2-BB46-A2DFABE24084}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamProfileManager.DataAccess", "SteamProfileManager.DataAccess\SteamProfileManager.DataAccess.csproj", "{729F52D3-2253-4C4A-A32E-8C05E1629453}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamProfileManager.BusinessLogic", "SteamProfileManager.BusinessLogic\SteamProfileManager.BusinessLogic.csproj", "{750CBC9D-667B-48EC-B813-9D96BDC51326}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamProfileManager.Web", "SteamProfileManager.Web\SteamProfileManager.Web.csproj", "{6200B082-687B-4866-AEEF-7487533873A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +27,18 @@ Global
 		{DCB7963B-8AE8-4401-A6C1-15AE361F7582}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCB7963B-8AE8-4401-A6C1-15AE361F7582}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCB7963B-8AE8-4401-A6C1-15AE361F7582}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6C55E74-47F3-46E2-BB46-A2DFABE24084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6C55E74-47F3-46E2-BB46-A2DFABE24084}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6C55E74-47F3-46E2-BB46-A2DFABE24084}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6C55E74-47F3-46E2-BB46-A2DFABE24084}.Release|Any CPU.Build.0 = Release|Any CPU
+		{729F52D3-2253-4C4A-A32E-8C05E1629453}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{729F52D3-2253-4C4A-A32E-8C05E1629453}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{729F52D3-2253-4C4A-A32E-8C05E1629453}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{729F52D3-2253-4C4A-A32E-8C05E1629453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{750CBC9D-667B-48EC-B813-9D96BDC51326}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{750CBC9D-667B-48EC-B813-9D96BDC51326}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{750CBC9D-667B-48EC-B813-9D96BDC51326}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{750CBC9D-667B-48EC-B813-9D96BDC51326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6200B082-687B-4866-AEEF-7487533873A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6200B082-687B-4866-AEEF-7487533873A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6200B082-687B-4866-AEEF-7487533873A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6200B082-687B-4866-AEEF-7487533873A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
