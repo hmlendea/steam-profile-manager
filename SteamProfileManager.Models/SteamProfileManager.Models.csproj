@@ -36,6 +36,13 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProfileActions\ChangeAvatarProfileAction.cs" />
+    <Compile Include="ProfileActions\Enumerations\ProfileActionType.cs" />
+    <Compile Include="ProfileActions\Interfaces\IProfileAction.cs" />
+    <Compile Include="ProfileTriggers\Enumerations\ProfileTriggerType.cs" />
+    <Compile Include="ProfileTriggers\Interfaces\IProfileTrigger.cs" />
+    <Compile Include="ProfileEvent.cs" />
+    <Compile Include="ProfileTriggers\SpecificDateProfileTrigger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteamUser.cs" />
     <Compile Include="SteamUserId.cs" />
