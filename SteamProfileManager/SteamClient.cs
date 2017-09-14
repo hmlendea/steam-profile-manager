@@ -128,6 +128,8 @@ namespace SteamProfileManager
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
+            var avatarHash = CurrentUser.AvatarHash;
+
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             using (Stream stream = response.GetResponseStream())
             using (StreamReader reader = new StreamReader(stream))
@@ -222,7 +224,7 @@ namespace SteamProfileManager
 
                 throw new AuthenticationException($"Unable to logon to Steam: {callback.Result} / {callback.ExtendedResult}");
             }
-
+            
             CurrentUser.SteamId = new SteamUserId(steamUser.SteamID);
             CurrentUser.IsScammer = GetScammerStatus(CurrentUser.SteamId.SteamId32);
 
@@ -245,6 +247,7 @@ namespace SteamProfileManager
             {
                 SteamUser friendUser = new SteamUser
                 {
+                    AvatarHash = community.GetFriendAvatar(friend.SteamID),
                     SteamId = new SteamUserId(friend.SteamID),
                     Name = community.GetFriendPersonaName(friend.SteamID),
                     IsOnline = community.GetFriendPersonaState(friend.SteamID) != 0,
@@ -294,6 +297,7 @@ namespace SteamProfileManager
 
             bool newStatus = (callback.State != 0);
 
+            user.AvatarHash = community.GetFriendAvatar(new SK.SteamID(user.SteamId.SteamId32));
             user.Name = community.GetPersonaName();
             user.LastOnlineDate = new DateTime(Math.Max(callback.LastLogOn.Ticks, callback.LastLogOff.Ticks));
 

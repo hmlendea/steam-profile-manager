@@ -4,9 +4,12 @@ namespace SteamProfileManager.Models
 {
     public class SteamUser
     {
-        public SteamUserId SteamId { get; set; }
+        /// SHA-1
+        public byte[] AvatarHash { get; set; }
 
         public string Name { get; set; }
+
+        public SteamUserId SteamId { get; set; }
 
         public bool IsOnline { get; set; }
 
