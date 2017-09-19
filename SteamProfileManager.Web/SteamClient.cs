@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Authentication;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 
 using SteamProfileManager.Models;
@@ -76,10 +77,13 @@ namespace SteamProfileManager.Web
             IsConnected = true;
             client.Connect();
 
-            while (IsConnected)
+            Task.Run(() =>
             {
-                manager.RunWaitCallbacks(TimeSpan.FromSeconds(1));
-            }
+                while (IsConnected)
+                {
+                    manager.RunWaitCallbacks(TimeSpan.FromSeconds(1));
+                }
+            });
         }
 
         public void LogIn(string username, string password, string authCode)
