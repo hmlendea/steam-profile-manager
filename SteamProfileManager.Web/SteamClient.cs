@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Authentication;
 using System.Security.Cryptography;
-using System.Threading;
 using System.Threading.Tasks;
 
 using SteamProfileManager.Models;

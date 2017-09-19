@@ -1,5 +1,5 @@
-﻿using SteamProfileManager.Models.ProfileActions.Interfaces;
-using SteamProfileManager.Models.ProfileTriggers.Interfaces;
+﻿using SteamProfileManager.Models.ProfileActions;
+using SteamProfileManager.Models.ProfileTriggers;
 
 namespace SteamProfileManager.Models
 {
@@ -7,8 +7,8 @@ namespace SteamProfileManager.Models
     {
         public string Id { get; set; }
 
-        public IProfileAction Action { get; set; }
+        public ProfileAction Action { get; set; }
 
-        public IProfileTrigger Trigger { get; set; }
+        public ProfileTrigger Trigger { get; set; }
     }
 }

@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using SteamProfileManager.BusinessLogic.SteamManagers.Interfaces;
+using SteamProfileManager.DataAccess.Repositories.Interfaces;
+using SteamProfileManager.DataAccess.Repositories;
+using SteamProfileManager.Models;
 using SteamProfileManager.Web;
 
 namespace SteamProfileManager.BusinessLogic.SteamManagers
@@ -9,12 +13,15 @@ namespace SteamProfileManager.BusinessLogic.SteamManagers
     public class ProfileManager : IProfileManager
     {
         static SteamClient client;
+        List<ProfileEvent> profileEvents;
 
         public ProfileManager()
         {
             client = new SteamClient();
 
             RegisterEvents();
+
+            profileEvents = GetAllProfileEvents();
         }
 
         public void LogIn(string username, string password)
@@ -41,7 +48,13 @@ namespace SteamProfileManager.BusinessLogic.SteamManagers
         {
             while (client.IsConnected)
             {
-                // TODO: Handle events here
+                foreach(ProfileEvent profileEvent in profileEvents)
+                {
+                    if (profileEvent.Trigger.CanRun)
+                    {
+                        profileEvent.Action.Execute();
+                    }
+                }
             }
         }
 
@@ -53,6 +66,12 @@ namespace SteamProfileManager.BusinessLogic.SteamManagers
             client.LoggedOut += OnClientLoggedOut;
             client.CommunityLoaded += OnClientCommunityLoaded;
             client.ClientFullyLoaded += OnClientFullyLoaded;
+        }
+
+        List<ProfileEvent> GetAllProfileEvents()
+        {
+            IProfileEventRepository repo = new ProfileEventRepository("profile-events.xml");
+            return repo.GetAll().ToList();
         }
 
         void OnClientConnected(object sender, EventArgs e)

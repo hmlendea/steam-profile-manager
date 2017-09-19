@@ -1,18 +1,16 @@
 ﻿using System;
 
-using SteamProfileManager.Models.ProfileActions.Interfaces;
-
 namespace SteamProfileManager.Models.ProfileActions
 {
-    public class ChangeAvatarProfileAction : IProfileAction
+    public class ChangeAvatarProfileAction : ProfileAction
     {
-        public Type Type => typeof(ChangeAvatarProfileAction);
+        public override Type Type => typeof(ChangeAvatarProfileAction);
 
         public string FilePath { get; set; }
 
-        public void Execute()
+        public override void Execute()
         {
-
+            // TODO: Do it!
         }
     }
 }

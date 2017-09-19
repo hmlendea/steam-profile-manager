@@ -1,22 +1,15 @@
 ﻿using System;
 
-using SteamProfileManager.Models.ProfileTriggers.Interfaces;
-
 namespace SteamProfileManager.Models.ProfileTriggers
 {
-    public class SpecificDateProfileTrigger : IProfileTrigger
+    public class SpecificDateProfileTrigger : ProfileTrigger
     {
-        public Type Type => typeof(SpecificDateProfileTrigger);
+        public override Type Type => typeof(SpecificDateProfileTrigger);
 
-        public DateTime LastRun { get; set; }
+        public override DateTime LastRun { get; set; }
 
         public DateTime Date { get; set; }
 
-        public bool CanRun => DateTime.Now >= Date && LastRun < Date;
-
-        public SpecificDateProfileTrigger()
-        {
-            LastRun = new DateTime(0);
-        }
+        public override bool CanRun => DateTime.Now >= Date && LastRun < Date;
     }
 }
