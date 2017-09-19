@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using SteamProfileManager.BusinessLogic.Mapping;
 using SteamProfileManager.BusinessLogic.SteamManagers.Interfaces;
 using SteamProfileManager.DataAccess.Repositories.Interfaces;
 using SteamProfileManager.DataAccess.Repositories;
@@ -71,7 +72,7 @@ namespace SteamProfileManager.BusinessLogic.SteamManagers
         List<ProfileEvent> GetAllProfileEvents()
         {
             IProfileEventRepository repo = new ProfileEventRepository("profile-events.xml");
-            return repo.GetAll().ToList();
+            return repo.GetAll().ToDomainModels().ToList();
         }
 
         void OnClientConnected(object sender, EventArgs e)

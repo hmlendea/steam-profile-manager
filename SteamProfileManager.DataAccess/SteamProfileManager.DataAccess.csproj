@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataObjects\ProfileActionEntities\ChangeAvatarProfileActionEntity.cs" />
+    <Compile Include="DataObjects\ProfileActionEntities\ProfileActionEntity.cs" />
+    <Compile Include="DataObjects\ProfileEventEntity.cs" />
+    <Compile Include="DataObjects\ProfileTriggerEntities\ProfileTriggerEntity.cs" />
+    <Compile Include="DataObjects\ProfileTriggerEntities\SpecificDateProfileTriggerEntity.cs" />
     <Compile Include="Exceptions\DuplicateEntityException.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="IO\XmlDatabase.cs" />
@@ -57,5 +62,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

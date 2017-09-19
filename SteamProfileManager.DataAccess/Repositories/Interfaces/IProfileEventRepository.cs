@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 
-using SteamProfileManager.Models;
+using SteamProfileManager.DataAccess.DataObjects;
 
 namespace SteamProfileManager.DataAccess.Repositories.Interfaces
 {
     public interface IProfileEventRepository
     {
-        void Add(ProfileEvent profileEventEntity);
+        void Add(ProfileEventEntity profileEventEntity);
 
-        ProfileEvent Get(string id);
+        ProfileEventEntity Get(string id);
 
-        IEnumerable<ProfileEvent> GetAll();
+        IEnumerable<ProfileEventEntity> GetAll();
 
-        void Update(ProfileEvent profileEventEntity);
+        void Update(ProfileEventEntity profileEventEntity);
 
         void Remove(string id);
     }

@@ -33,6 +33,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\ProfileActionMapping\ProfileActionMappingExtensions.cs" />
+    <Compile Include="Mapping\ProfileEventMappingExtensions.cs" />
+    <Compile Include="Mapping\ProfileActionMapping\ChangeAvatarProfileActionMappingExtensions.cs" />
+    <Compile Include="Mapping\ProfileTriggerMapping\ProfileTriggerMappingExtensions.cs" />
+    <Compile Include="Mapping\ProfileTriggerMapping\SpecificDateProfileTriggerMappingExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteamManagers\Interfaces\IProfileManager.cs" />
     <Compile Include="SteamManagers\ProfileManager.cs" />
