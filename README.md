@@ -1,0 +1,1 @@
+[![Build Status](https://github.com/hmlendea/steam-profile-manager/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hmlendea/steam-profile-manager/actions/workflows/dotnet.yml) [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/steam-profile-manager)](https://github.com/hmlendea/steam-profile-manager/releases/latest)
