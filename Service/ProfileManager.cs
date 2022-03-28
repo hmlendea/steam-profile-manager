@@ -33,6 +33,7 @@ namespace SteamProfileManager.Service
                 new LogInfo(MyLogInfoKey.Username, botSettings.SteamAccount.Username));
 
             steamProcessor.LogIn(botSettings.SteamAccount);
+            steamProcessor.RejectCookies();
 
             logger.Info(
                 MyOperation.LogIn,
