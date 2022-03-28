@@ -8,4 +8,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NuciWeb.Steam" Version="1.1.1" />
+  </ItemGroup>
+
 </Project>
