@@ -15,7 +15,7 @@
     <PackageReference Include="NuciLog" Version="1.1.0.1" />
     <PackageReference Include="NuciLog.Core" Version="2.3.1" />
     <PackageReference Include="NuciWeb" Version="2.1.0" />
-    <PackageReference Include="NuciWeb.Steam" Version="1.1.1" />
+    <PackageReference Include="NuciWeb.Steam" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>

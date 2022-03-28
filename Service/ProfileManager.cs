@@ -1,5 +1,3 @@
-using System;
-
 using NuciLog.Core;
 using NuciWeb.Steam;
 
@@ -34,7 +32,8 @@ namespace SteamProfileManager.Service
         public void SetRandomUsername()
         {
             string username = infoGenerator.GetRandomUsername();
-            throw new NotImplementedException();
+
+            steamProcessor.SetProfileName(username);
         }
     }
 }
