@@ -2,6 +2,7 @@ using NuciLog.Core;
 using NuciWeb.Steam;
 
 using SteamProfileManager.Configuration;
+using SteamProfileManager.Logging;
 
 namespace SteamProfileManager.Service
 {
@@ -26,14 +27,33 @@ namespace SteamProfileManager.Service
 
         public void LogIn()
         {
+            logger.Debug(
+                MyOperation.LogIn,
+                OperationStatus.Started,
+                new LogInfo(MyLogInfoKey.Username, botSettings.SteamAccount.Username));
+
             steamProcessor.LogIn(botSettings.SteamAccount);
+
+            logger.Info(
+                MyOperation.LogIn,
+                OperationStatus.Success,
+                new LogInfo(MyLogInfoKey.Username, botSettings.SteamAccount.Username));
         }
 
-        public void SetRandomUsername()
+        public void SetRandomProfileName()
         {
-            string username = infoGenerator.GetRandomUsername();
+            logger.Debug(
+                MyOperation.SetProfileName,
+                OperationStatus.Started);
 
-            steamProcessor.SetProfileName(username);
+            string profileName = infoGenerator.GetRandomProfileName();
+
+            steamProcessor.SetProfileName(profileName);
+
+            logger.Info(
+                MyOperation.SetProfileName,
+                OperationStatus.Success,
+                new LogInfo(MyLogInfoKey.ProfileName, profileName));
         }
     }
 }

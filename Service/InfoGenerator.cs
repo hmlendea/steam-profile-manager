@@ -9,7 +9,7 @@ namespace SteamProfileManager.Service
         static string NumericCharacters => "0123456789";
         static string AllCharacters => $"{LowerCaseCharacters}{UpperCaseCharacters}{NumericCharacters}";
 
-        public string GetRandomUsername()
+        public string GetRandomProfileName()
         {
             string username = string.Empty;
 

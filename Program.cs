@@ -67,7 +67,7 @@ namespace SteamProfileManager
         {
             IProfileManager profile = serviceProvider.GetService<IProfileManager>();
             profile.LogIn();
-            profile.SetRandomUsername();
+            profile.SetRandomProfileName();
 
             webDriver.Quit();
         }

@@ -4,6 +4,6 @@ namespace SteamProfileManager.Service
     {
         void LogIn();
 
-        void SetRandomUsername();
+        void SetRandomProfileName();
     }
 }
