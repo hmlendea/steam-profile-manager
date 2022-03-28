@@ -40,20 +40,20 @@ namespace SteamProfileManager.Service
                 new LogInfo(MyLogInfoKey.Username, botSettings.SteamAccount.Username));
         }
 
-        public void SetRandomUsername()
+        public void SetRandomProfileName()
         {
             logger.Debug(
                 MyOperation.SetProfileName,
                 OperationStatus.Started);
 
-            string username = infoGenerator.GetRandomUsername();
+            string profileName = infoGenerator.GetRandomProfileName();
 
-            steamProcessor.SetProfileName(username);
+            steamProcessor.SetProfileName(profileName);
 
             logger.Info(
                 MyOperation.SetProfileName,
                 OperationStatus.Success,
-                new LogInfo(MyLogInfoKey.ProfileName, username));
+                new LogInfo(MyLogInfoKey.ProfileName, profileName));
         }
     }
 }
