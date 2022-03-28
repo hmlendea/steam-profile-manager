@@ -76,6 +76,7 @@ namespace SteamProfileManager
         {
             botSettings = new BotSettings();
             debugSettings = new DebugSettings();
+            loggerSettings = new NuciLoggerSettings();
             
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
@@ -83,6 +84,7 @@ namespace SteamProfileManager
 
             config.Bind(nameof(BotSettings), botSettings);
             config.Bind(nameof(DebugSettings), debugSettings);
+            config.Bind(nameof(NuciLoggerSettings), loggerSettings);
 
             return config;
         }

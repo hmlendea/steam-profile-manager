@@ -18,4 +18,10 @@
     <PackageReference Include="NuciWeb.Steam" Version="1.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
