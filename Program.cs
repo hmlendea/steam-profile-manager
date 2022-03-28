@@ -14,6 +14,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 using SteamProfileManager.Configuration;
+using SteamProfileManager.Service;
 
 namespace SteamProfileManager
 {
@@ -64,6 +65,10 @@ namespace SteamProfileManager
 
         static void RunApplication()
         {
+            IProfileManager profile = serviceProvider.GetService<IProfileManager>();
+            profile.LogIn();
+            profile.SetRandomUsername();
+
             webDriver.Quit();
         }
         
