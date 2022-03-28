@@ -97,6 +97,8 @@ namespace SteamProfileManager
                 .AddSingleton<IWebDriver>(s => webDriver)
                 .AddSingleton<IWebProcessor, WebProcessor>()
                 .AddSingleton<ISteamProcessor, SteamProcessor>()
+                .AddSingleton<IInfoGenerator, InfoGenerator>()
+                .AddSingleton<IProfileManager, ProfileManager>()
                 .BuildServiceProvider();
         }
 
