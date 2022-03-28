@@ -10,6 +10,9 @@ using NuciLog.Core;
 using NuciWeb;
 using NuciWeb.Steam;
 
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+
 using SteamProfileManager.Configuration;
 
 namespace SteamProfileManager
@@ -20,6 +23,7 @@ namespace SteamProfileManager
         static DebugSettings debugSettings;
         static NuciLoggerSettings loggerSettings;
 
+        static IWebDriver webDriver;
         static ILogger logger;
 
         static IServiceProvider serviceProvider;
@@ -27,6 +31,7 @@ namespace SteamProfileManager
         static void Main(string[] args)
         {
             LoadConfiguration();
+            SetupDriver();
 
             serviceProvider = CreateIOC();
             logger = serviceProvider.GetService<ILogger>();
@@ -48,13 +53,18 @@ namespace SteamProfileManager
             }
             finally
             {
+                if (!(webDriver is null))
+                {
+                    webDriver.Quit();
+                }
+
                 logger.Info(Operation.ShutDown, "Application stopped");
             }
         }
 
         static void RunApplication()
         {
-
+            webDriver.Quit();
         }
         
         static IConfiguration LoadConfiguration()
@@ -77,7 +87,54 @@ namespace SteamProfileManager
             return new ServiceCollection()
                 .AddSingleton(botSettings)
                 .AddSingleton(debugSettings)
+                .AddSingleton(loggerSettings)
+                .AddSingleton<ILogger, NuciLogger>()
+                .AddSingleton<IWebDriver>(s => webDriver)
+                .AddSingleton<IWebProcessor, WebProcessor>()
+                .AddSingleton<ISteamProcessor, SteamProcessor>()
                 .BuildServiceProvider();
+        }
+
+        static void SetupDriver()
+        {
+            ChromeOptions options = new ChromeOptions();
+            options.PageLoadStrategy = PageLoadStrategy.None;
+            options.AddExcludedArgument("--enable-logging");
+            options.AddArgument("--silent");
+            options.AddArgument("--no-sandbox");
+			options.AddArgument("--disable-translate");
+			options.AddArgument("--disable-infobars");
+			options.AddArgument("--disable-logging");
+
+            if (debugSettings.IsHeadless)
+            {
+                options.AddArgument("--headless");
+                options.AddArgument("--disable-gpu");
+                options.AddArgument("--window-size=1366,768");
+                options.AddArgument("--start-maximized");
+                options.AddArgument("--blink-settings=imagesEnabled=false");
+                options.AddUserProfilePreference("profile.default_content_setting_values.images", 2);
+            }
+
+            ChromeDriverService service = ChromeDriverService.CreateDefaultService();
+            service.SuppressInitialDiagnosticInformation = true;
+            service.HideCommandPromptWindow = true;
+
+            webDriver = new ChromeDriver(service, options, TimeSpan.FromSeconds(botSettings.PageLoadTimeout));
+            IJavaScriptExecutor scriptExecutor = (IJavaScriptExecutor)webDriver;
+            string userAgent = (string)scriptExecutor.ExecuteScript("return navigator.userAgent;");
+
+            if (userAgent.Contains("Headless"))
+            {
+                userAgent = userAgent.Replace("Headless", "");
+                options.AddArgument($"--user-agent={userAgent}");
+
+                webDriver.Quit();
+                webDriver = new ChromeDriver(service, options);
+            }
+
+            webDriver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(botSettings.PageLoadTimeout);
+            webDriver.Manage().Window.Maximize();
         }
 
         static void LogInnerExceptions(AggregateException exception)
