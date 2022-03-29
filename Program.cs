@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Security.Authentication;
+using System.IO;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,14 +43,15 @@ namespace SteamProfileManager
             {
                 RunApplication();
             }
-            catch (AuthenticationException) { }
             catch (AggregateException ex)
             {
                 LogInnerExceptions(ex);
+                SaveCrashScreenshot();
             }
             catch (Exception ex)
             {
                 logger.Fatal(Operation.Unknown, OperationStatus.Failure, ex);
+                SaveCrashScreenshot();
             }
             finally
             {
@@ -161,6 +162,21 @@ namespace SteamProfileManager
                     LogInnerExceptions(innerException as AggregateException);
                 }
             }
+        }
+
+        static void SaveCrashScreenshot()
+        {
+            if (!debugSettings.IsCrashScreenshotEnabled)
+            {
+                return;
+            }
+
+            string directory = Path.GetDirectoryName(loggerSettings.LogFilePath);
+            string filePath = Path.Combine(directory, debugSettings.CrashScreenshotFileName);
+
+            ((ITakesScreenshot)webDriver)
+                .GetScreenshot()
+                .SaveAsFile(filePath);
         }
     }
 }
