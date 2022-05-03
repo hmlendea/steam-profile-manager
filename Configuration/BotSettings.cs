@@ -8,8 +8,8 @@ namespace SteamProfileManager.Configuration
 
         public SteamAccount SteamAccount { get; set; }
 
-        public bool RandomiseUsername { get; set; }
+        public bool RandomiseProfileName { get; set; }
 
-        public string UsernameRandomisationList { get; set; }
+        public string ProfileNamesList { get; set; }
     }
 }

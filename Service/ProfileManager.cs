@@ -52,7 +52,7 @@ namespace SteamProfileManager.Service
 
             string profileName = null;
 
-            if (!string.IsNullOrWhiteSpace(botSettings.UsernameRandomisationList))
+            if (!string.IsNullOrWhiteSpace(botSettings.ProfileNamesList))
             {
                 profileName = GetRandomUsernameFromList();
             }
@@ -71,7 +71,7 @@ namespace SteamProfileManager.Service
 
         private string GetRandomUsernameFromList()
             => File
-                .ReadAllLines(botSettings.UsernameRandomisationList)
+                .ReadAllLines(botSettings.ProfileNamesList)
                 .GetRandomElement();
     }
 }

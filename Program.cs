@@ -69,7 +69,7 @@ namespace SteamProfileManager
             IProfileManager profile = serviceProvider.GetService<IProfileManager>();
             profile.LogIn();
 
-            if (botSettings.RandomiseUsername)
+            if (botSettings.RandomiseProfileName)
             {
                 profile.SetRandomProfileName();
             }
