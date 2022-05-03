@@ -68,17 +68,21 @@ namespace SteamProfileManager
         {
             IProfileManager profile = serviceProvider.GetService<IProfileManager>();
             profile.LogIn();
-            profile.SetRandomProfileName();
+
+            if (botSettings.RandomiseProfileName)
+            {
+                profile.SetRandomProfileName();
+            }
 
             webDriver.Quit();
         }
-        
+
         static IConfiguration LoadConfiguration()
         {
             botSettings = new BotSettings();
             debugSettings = new DebugSettings();
             loggerSettings = new NuciLoggerSettings();
-            
+
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();

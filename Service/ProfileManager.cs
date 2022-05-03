@@ -1,3 +1,6 @@
+using System.IO;
+
+using NuciExtensions;
 using NuciLog.Core;
 using NuciWeb.Steam;
 
@@ -47,7 +50,16 @@ namespace SteamProfileManager.Service
                 MyOperation.SetProfileName,
                 OperationStatus.Started);
 
-            string profileName = infoGenerator.GetRandomProfileName();
+            string profileName = null;
+
+            if (!string.IsNullOrWhiteSpace(botSettings.ProfileNamesList))
+            {
+                profileName = GetRandomUsernameFromList();
+            }
+            else
+            {
+                profileName = infoGenerator.GetRandomProfileName();
+            }
 
             steamProcessor.SetProfileName(profileName);
 
@@ -56,5 +68,10 @@ namespace SteamProfileManager.Service
                 OperationStatus.Success,
                 new LogInfo(MyLogInfoKey.ProfileName, profileName));
         }
+
+        private string GetRandomUsernameFromList()
+            => File
+                .ReadAllLines(botSettings.ProfileNamesList)
+                .GetRandomElement();
     }
 }
