@@ -7,5 +7,9 @@ namespace SteamProfileManager.Configuration
         public int PageLoadTimeout { get; set; }
 
         public SteamAccount SteamAccount { get; set; }
+
+        public bool RandomiseUsername { get; set; }
+
+        public string UsernameRandomisationList { get; set; }
     }
 }
