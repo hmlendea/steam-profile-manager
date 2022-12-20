@@ -12,6 +12,7 @@ using NuciWeb.Steam;
 
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 
 using SteamProfileManager.Configuration;
 using SteamProfileManager.Service;
@@ -32,7 +33,7 @@ namespace SteamProfileManager
         static void Main(string[] args)
         {
             LoadConfiguration();
-            SetupDriver();
+            SetupWebDriver();
 
             serviceProvider = CreateIOC();
             logger = serviceProvider.GetService<ILogger>();
@@ -109,7 +110,45 @@ namespace SteamProfileManager
                 .BuildServiceProvider();
         }
 
-        static void SetupDriver()
+        static void SetupWebDriver()
+        {
+            if (File.Exists("/usr/bin/geckodriver"))
+            {
+                webDriver = InitialiseFirefoxDriver();
+            }
+            else
+            {
+                webDriver = InitialiseChromeDriver();
+            }
+        }
+
+        static IWebDriver InitialiseFirefoxDriver()
+        {
+            FirefoxOptions options = new FirefoxOptions();
+            options.PageLoadStrategy = PageLoadStrategy.None;
+			options.AddArgument("--disable-save-password-bubble");
+            options.SetPreference("privacy.firstparty.isolate", false);
+
+            if (debugSettings.IsHeadless)
+            {
+                options.AddArgument("--headless");
+                options.SetPreference("permissions.default.image", 2);
+            }
+
+            FirefoxDriverService service = FirefoxDriverService.CreateDefaultService();
+            service.SuppressInitialDiagnosticInformation = true;
+            service.HideCommandPromptWindow = true;
+            service.LogLevel = FirefoxDriverLogLevel.Error;
+
+            IWebDriver driver = new FirefoxDriver(service, options, TimeSpan.FromSeconds(botSettings.PageLoadTimeout));
+
+            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(botSettings.PageLoadTimeout);
+            driver.Manage().Window.Maximize();
+
+            return driver;
+        }
+
+        static IWebDriver InitialiseChromeDriver()
         {
             ChromeOptions options = new ChromeOptions();
             options.PageLoadStrategy = PageLoadStrategy.None;
@@ -134,7 +173,7 @@ namespace SteamProfileManager
             service.SuppressInitialDiagnosticInformation = true;
             service.HideCommandPromptWindow = true;
 
-            webDriver = new ChromeDriver(service, options, TimeSpan.FromSeconds(botSettings.PageLoadTimeout));
+            ChromeDriver webDriver = new ChromeDriver(service, options, TimeSpan.FromSeconds(botSettings.PageLoadTimeout));
             IJavaScriptExecutor scriptExecutor = (IJavaScriptExecutor)webDriver;
             string userAgent = (string)scriptExecutor.ExecuteScript("return navigator.userAgent;");
 
@@ -149,6 +188,8 @@ namespace SteamProfileManager
 
             webDriver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(botSettings.PageLoadTimeout);
             webDriver.Manage().Window.Maximize();
+
+            return webDriver;
         }
 
         static void LogInnerExceptions(AggregateException exception)
