@@ -33,7 +33,7 @@ namespace SteamProfileManager
         static void Main(string[] args)
         {
             LoadConfiguration();
-            SetupWebDriver();
+            webDriver = WebDriverInitialiser.InitialiseAvailableWebDriver(debugSettings.IsDebugMode, botSettings.PageLoadTimeout);
 
             serviceProvider = CreateIOC();
             logger = serviceProvider.GetService<ILogger>();
@@ -108,88 +108,6 @@ namespace SteamProfileManager
                 .AddSingleton<IInfoGenerator, InfoGenerator>()
                 .AddSingleton<IProfileManager, ProfileManager>()
                 .BuildServiceProvider();
-        }
-
-        static void SetupWebDriver()
-        {
-            if (File.Exists("/usr/bin/geckodriver"))
-            {
-                webDriver = InitialiseFirefoxDriver();
-            }
-            else
-            {
-                webDriver = InitialiseChromeDriver();
-            }
-        }
-
-        static IWebDriver InitialiseFirefoxDriver()
-        {
-            FirefoxOptions options = new FirefoxOptions();
-            options.PageLoadStrategy = PageLoadStrategy.None;
-			options.AddArgument("--disable-save-password-bubble");
-            options.SetPreference("privacy.firstparty.isolate", false);
-
-            if (debugSettings.IsHeadless)
-            {
-                options.AddArgument("--headless");
-                options.SetPreference("permissions.default.image", 2);
-            }
-
-            FirefoxDriverService service = FirefoxDriverService.CreateDefaultService();
-            service.SuppressInitialDiagnosticInformation = true;
-            service.HideCommandPromptWindow = true;
-            service.LogLevel = FirefoxDriverLogLevel.Error;
-
-            IWebDriver driver = new FirefoxDriver(service, options, TimeSpan.FromSeconds(botSettings.PageLoadTimeout));
-
-            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(botSettings.PageLoadTimeout);
-            driver.Manage().Window.Maximize();
-
-            return driver;
-        }
-
-        static IWebDriver InitialiseChromeDriver()
-        {
-            ChromeOptions options = new ChromeOptions();
-            options.PageLoadStrategy = PageLoadStrategy.None;
-            options.AddExcludedArgument("--enable-logging");
-            options.AddArgument("--silent");
-            options.AddArgument("--no-sandbox");
-			options.AddArgument("--disable-translate");
-			options.AddArgument("--disable-infobars");
-			options.AddArgument("--disable-logging");
-
-            if (debugSettings.IsHeadless)
-            {
-                options.AddArgument("--headless");
-                options.AddArgument("--disable-gpu");
-                options.AddArgument("--window-size=1366,768");
-                options.AddArgument("--start-maximized");
-                options.AddArgument("--blink-settings=imagesEnabled=false");
-                options.AddUserProfilePreference("profile.default_content_setting_values.images", 2);
-            }
-
-            ChromeDriverService service = ChromeDriverService.CreateDefaultService();
-            service.SuppressInitialDiagnosticInformation = true;
-            service.HideCommandPromptWindow = true;
-
-            ChromeDriver webDriver = new ChromeDriver(service, options, TimeSpan.FromSeconds(botSettings.PageLoadTimeout));
-            IJavaScriptExecutor scriptExecutor = (IJavaScriptExecutor)webDriver;
-            string userAgent = (string)scriptExecutor.ExecuteScript("return navigator.userAgent;");
-
-            if (userAgent.Contains("Headless"))
-            {
-                userAgent = userAgent.Replace("Headless", "");
-                options.AddArgument($"--user-agent={userAgent}");
-
-                webDriver.Quit();
-                webDriver = new ChromeDriver(service, options);
-            }
-
-            webDriver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(botSettings.PageLoadTimeout);
-            webDriver.Manage().Window.Maximize();
-
-            return webDriver;
         }
 
         static void LogInnerExceptions(AggregateException exception)
