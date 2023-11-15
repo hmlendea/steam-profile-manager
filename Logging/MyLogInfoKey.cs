@@ -15,5 +15,7 @@ namespace SteamProfileManager.Logging
         public static LogInfoKey ProfileName => new MyLogInfoKey(nameof(ProfileName));
 
         public static LogInfoKey ProfileIdentifier => new MyLogInfoKey(nameof(ProfileIdentifier));
+
+        public static LogInfoKey ProfilePicture => new MyLogInfoKey(nameof(ProfilePicture));
     }
 }

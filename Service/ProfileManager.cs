@@ -12,17 +12,20 @@ namespace SteamProfileManager.Service
     public sealed class ProfileManager : IProfileManager
     {
         readonly IInfoGenerator infoGenerator;
+        readonly IFileDownloader fileDownloader;
         readonly ISteamProcessor steamProcessor;
         readonly BotSettings botSettings;
         readonly ILogger logger;
 
         public ProfileManager(
             IInfoGenerator infoGenerator,
+            IFileDownloader fileDownloader,
             ISteamProcessor steamProcessor,
             BotSettings botSettings,
             ILogger logger)
         {
             this.infoGenerator = infoGenerator;
+            this.fileDownloader = fileDownloader;
             this.steamProcessor = steamProcessor;
             this.botSettings = botSettings;
             this.logger = logger;
@@ -54,7 +57,7 @@ namespace SteamProfileManager.Service
 
             if (!string.IsNullOrWhiteSpace(botSettings.ProfileNamesList))
             {
-                profileName = GetRandomUsernameFromList();
+                profileName = GetRandomEntryFromList(botSettings.ProfileNamesList);
             }
             else
             {
@@ -85,9 +88,37 @@ namespace SteamProfileManager.Service
                 new LogInfo(MyLogInfoKey.ProfileIdentifier, profileIdentifier));
         }
 
-        private string GetRandomUsernameFromList()
+        public void SetRandomProfilePicture()
+        {
+            logger.Debug(
+                MyOperation.SetProfilePicture,
+                OperationStatus.Started);
+
+            string profilePictureUrl = null;
+
+            if (!string.IsNullOrWhiteSpace(botSettings.ProfilePicturesList))
+            {
+                profilePictureUrl = GetRandomEntryFromList(botSettings.ProfilePicturesList);
+            }
+            else
+            {
+                profilePictureUrl = "https://i.imgur.com/rV2RQMO.png";
+            }
+
+            string profilePictureFilePath = Path.Join(Directory.GetCurrentDirectory(), "profilePicture.png");
+
+            fileDownloader.Download(profilePictureUrl, profilePictureFilePath);
+            steamProcessor.SetProfilePicture(profilePictureFilePath);
+
+            logger.Info(
+                MyOperation.SetProfilePicture,
+                OperationStatus.Success,
+                new LogInfo(MyLogInfoKey.ProfilePicture, profilePictureUrl));
+        }
+
+        private string GetRandomEntryFromList(string listPath)
             => File
-                .ReadAllLines(botSettings.ProfileNamesList)
+                .ReadAllLines(listPath)
                 .GetRandomElement();
     }
 }
