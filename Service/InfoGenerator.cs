@@ -20,5 +20,17 @@ namespace SteamProfileManager.Service
 
             return username;
         }
+
+        public string GetRandomProfileIdentifier()
+        {
+            string identifier = string.Empty;
+
+            for (int i = 0; i < 8; i++)
+            {
+                identifier += AllCharacters.GetRandomElement();
+            }
+
+            return identifier;
+        }
     }
 }

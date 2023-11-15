@@ -62,11 +62,28 @@ namespace SteamProfileManager.Service
             }
 
             steamProcessor.SetProfileName(profileName);
+            //steamProcessor.SetProfilePicture("/home/horatiu/Downloads/Untitled.png");
 
             logger.Info(
                 MyOperation.SetProfileName,
                 OperationStatus.Success,
                 new LogInfo(MyLogInfoKey.ProfileName, profileName));
+        }
+
+        public void SetRandomProfileIdentifier()
+        {
+            logger.Debug(
+                MyOperation.SetProfileIdentifier,
+                OperationStatus.Started);
+
+            string profileIdentifier = infoGenerator.GetRandomProfileIdentifier();
+
+            steamProcessor.SetProfileIdentifier(profileIdentifier);
+
+            logger.Info(
+                MyOperation.SetProfileIdentifier,
+                OperationStatus.Success,
+                new LogInfo(MyLogInfoKey.ProfileIdentifier, profileIdentifier));
         }
 
         private string GetRandomUsernameFromList()

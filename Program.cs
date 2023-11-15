@@ -75,6 +75,11 @@ namespace SteamProfileManager
                 profile.SetRandomProfileName();
             }
 
+            if (botSettings.RandomiseProfileIdentifier)
+            {
+                profile.SetRandomProfileIdentifier();
+            }
+
             webDriver.Quit();
         }
 
