@@ -11,8 +11,6 @@ using NuciWeb;
 using NuciWeb.Steam;
 
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
 
 using SteamProfileManager.Configuration;
 using SteamProfileManager.Service;
