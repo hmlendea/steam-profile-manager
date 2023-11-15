@@ -62,7 +62,6 @@ namespace SteamProfileManager.Service
             }
 
             steamProcessor.SetProfileName(profileName);
-            //steamProcessor.SetProfilePicture("/home/horatiu/Downloads/Untitled.png");
 
             logger.Info(
                 MyOperation.SetProfileName,
