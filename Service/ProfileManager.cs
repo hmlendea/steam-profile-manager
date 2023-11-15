@@ -69,6 +69,22 @@ namespace SteamProfileManager.Service
                 new LogInfo(MyLogInfoKey.ProfileName, profileName));
         }
 
+        public void SetRandomProfileIdentifier()
+        {
+            logger.Debug(
+                MyOperation.SetProfileIdentifier,
+                OperationStatus.Started);
+
+            string profileIdentifier = infoGenerator.GetRandomProfileIdentifier();
+
+            steamProcessor.SetProfileIdentifier(profileIdentifier);
+
+            logger.Info(
+                MyOperation.SetProfileIdentifier,
+                OperationStatus.Success,
+                new LogInfo(MyLogInfoKey.ProfileIdentifier, profileIdentifier));
+        }
+
         private string GetRandomUsernameFromList()
             => File
                 .ReadAllLines(botSettings.ProfileNamesList)

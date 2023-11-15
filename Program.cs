@@ -11,8 +11,6 @@ using NuciWeb;
 using NuciWeb.Steam;
 
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
 
 using SteamProfileManager.Configuration;
 using SteamProfileManager.Service;
@@ -73,6 +71,11 @@ namespace SteamProfileManager
             if (botSettings.RandomiseProfileName)
             {
                 profile.SetRandomProfileName();
+            }
+
+            if (botSettings.RandomiseProfileIdentifier)
+            {
+                profile.SetRandomProfileIdentifier();
             }
 
             webDriver.Quit();

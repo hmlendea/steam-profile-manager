@@ -7,11 +7,13 @@ namespace SteamProfileManager.Logging
         MyOperation(string name)
             : base(name)
         {
-            
+
         }
 
         public static Operation LogIn => new MyOperation(nameof(LogIn));
 
         public static Operation SetProfileName => new MyOperation(nameof(SetProfileName));
+
+        public static Operation SetProfileIdentifier => new MyOperation(nameof(SetProfileIdentifier));
     }
 }

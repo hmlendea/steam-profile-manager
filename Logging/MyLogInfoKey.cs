@@ -7,11 +7,13 @@ namespace SteamProfileManager.Logging
         MyLogInfoKey(string name)
             : base(name)
         {
-            
+
         }
 
         public static LogInfoKey Username => new MyLogInfoKey(nameof(Username));
 
         public static LogInfoKey ProfileName => new MyLogInfoKey(nameof(ProfileName));
+
+        public static LogInfoKey ProfileIdentifier => new MyLogInfoKey(nameof(ProfileIdentifier));
     }
 }
