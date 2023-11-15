@@ -12,6 +12,10 @@ namespace SteamProfileManager.Configuration
 
         public bool RandomiseProfileIdentifier { get; set; }
 
+        public bool RandomiseProfilePicture { get; set; }
+
         public string ProfileNamesList { get; set; }
+
+        public string ProfilePicturesList { get; set; }
     }
 }

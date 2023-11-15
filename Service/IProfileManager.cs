@@ -7,5 +7,7 @@ namespace SteamProfileManager.Service
         void SetRandomProfileName();
 
         void SetRandomProfileIdentifier();
+
+        void SetRandomProfilePicture();
     }
 }

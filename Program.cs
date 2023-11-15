@@ -78,6 +78,11 @@ namespace SteamProfileManager
                 profile.SetRandomProfileIdentifier();
             }
 
+            if (botSettings.RandomiseProfilePicture)
+            {
+                profile.SetRandomProfilePicture();
+            }
+
             webDriver.Quit();
         }
 
@@ -108,6 +113,7 @@ namespace SteamProfileManager
                 .AddSingleton<IWebDriver>(s => webDriver)
                 .AddSingleton<IWebProcessor, WebProcessor>()
                 .AddSingleton<ISteamProcessor, SteamProcessor>()
+                .AddSingleton<IFileDownloader, FileDownloader>()
                 .AddSingleton<IInfoGenerator, InfoGenerator>()
                 .AddSingleton<IProfileManager, ProfileManager>()
                 .BuildServiceProvider();

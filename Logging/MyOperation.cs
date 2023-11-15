@@ -15,5 +15,7 @@ namespace SteamProfileManager.Logging
         public static Operation SetProfileName => new MyOperation(nameof(SetProfileName));
 
         public static Operation SetProfileIdentifier => new MyOperation(nameof(SetProfileIdentifier));
+
+        public static Operation SetProfilePicture => new MyOperation(nameof(SetProfilePicture));
     }
 }
