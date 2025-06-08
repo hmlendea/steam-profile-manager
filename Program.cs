@@ -54,10 +54,7 @@ namespace SteamProfileManager
             }
             finally
             {
-                if (!(webDriver is null))
-                {
-                    webDriver.Quit();
-                }
+                webDriver?.Quit();
 
                 logger.Info(Operation.ShutDown, "Application stopped");
             }
@@ -103,35 +100,30 @@ namespace SteamProfileManager
             return config;
         }
 
-        static IServiceProvider CreateIOC()
-        {
-            return new ServiceCollection()
-                .AddSingleton(botSettings)
-                .AddSingleton(debugSettings)
-                .AddSingleton(loggerSettings)
-                .AddSingleton<ILogger, NuciLogger>()
-                .AddSingleton<IWebDriver>(s => webDriver)
-                .AddSingleton<IWebProcessor, WebProcessor>()
-                .AddSingleton<ISteamProcessor, SteamProcessor>()
-                .AddSingleton<IFileDownloader, FileDownloader>()
-                .AddSingleton<IInfoGenerator, InfoGenerator>()
-                .AddSingleton<IProfileManager, ProfileManager>()
-                .BuildServiceProvider();
-        }
+        static IServiceProvider CreateIOC() => new ServiceCollection()
+            .AddSingleton(botSettings)
+            .AddSingleton(debugSettings)
+            .AddSingleton(loggerSettings)
+            .AddSingleton<ILogger, NuciLogger>()
+            .AddSingleton<IWebDriver>(s => webDriver)
+            .AddSingleton<IWebProcessor, WebProcessor>()
+            .AddSingleton<ISteamProcessor, SteamProcessor>()
+            .AddSingleton<IFileDownloader, FileDownloader>()
+            .AddSingleton<IInfoGenerator, InfoGenerator>()
+            .AddSingleton<IProfileManager, ProfileManager>()
+            .BuildServiceProvider();
 
         static void LogInnerExceptions(AggregateException exception)
         {
             foreach (Exception innerException in exception.InnerExceptions)
             {
-                AggregateException innerAggregateException = innerException as AggregateException;
-
-                if (innerAggregateException is null)
+                if (innerException is AggregateException)
                 {
-                    logger.Fatal(Operation.Unknown, OperationStatus.Failure, innerException);
+                    LogInnerExceptions(innerException as AggregateException);
                 }
                 else
                 {
-                    LogInnerExceptions(innerException as AggregateException);
+                    logger.Fatal(Operation.Unknown, OperationStatus.Failure, innerException);
                 }
             }
         }
