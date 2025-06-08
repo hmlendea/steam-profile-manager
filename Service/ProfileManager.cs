@@ -9,27 +9,18 @@ using SteamProfileManager.Logging;
 
 namespace SteamProfileManager.Service
 {
-    public sealed class ProfileManager : IProfileManager
+    public sealed class ProfileManager(
+        IInfoGenerator infoGenerator,
+        IFileDownloader fileDownloader,
+        ISteamProcessor steamProcessor,
+        BotSettings botSettings,
+        ILogger logger) : IProfileManager
     {
-        readonly IInfoGenerator infoGenerator;
-        readonly IFileDownloader fileDownloader;
-        readonly ISteamProcessor steamProcessor;
-        readonly BotSettings botSettings;
-        readonly ILogger logger;
-
-        public ProfileManager(
-            IInfoGenerator infoGenerator,
-            IFileDownloader fileDownloader,
-            ISteamProcessor steamProcessor,
-            BotSettings botSettings,
-            ILogger logger)
-        {
-            this.infoGenerator = infoGenerator;
-            this.fileDownloader = fileDownloader;
-            this.steamProcessor = steamProcessor;
-            this.botSettings = botSettings;
-            this.logger = logger;
-        }
+        readonly IInfoGenerator infoGenerator = infoGenerator;
+        readonly IFileDownloader fileDownloader = fileDownloader;
+        readonly ISteamProcessor steamProcessor = steamProcessor;
+        readonly BotSettings botSettings = botSettings;
+        readonly ILogger logger = logger;
 
         public void LogIn()
         {
@@ -53,7 +44,7 @@ namespace SteamProfileManager.Service
                 MyOperation.SetProfileName,
                 OperationStatus.Started);
 
-            string profileName = null;
+            string profileName;
 
             if (!string.IsNullOrWhiteSpace(botSettings.ProfileNamesList))
             {
@@ -94,7 +85,7 @@ namespace SteamProfileManager.Service
                 MyOperation.SetProfilePicture,
                 OperationStatus.Started);
 
-            string profilePictureUrl = null;
+            string profilePictureUrl;
 
             if (!string.IsNullOrWhiteSpace(botSettings.ProfilePicturesList))
             {
@@ -116,7 +107,7 @@ namespace SteamProfileManager.Service
                 new LogInfo(MyLogInfoKey.ProfilePicture, profilePictureUrl));
         }
 
-        private string GetRandomEntryFromList(string listPath)
+        private static string GetRandomEntryFromList(string listPath)
             => File
                 .ReadAllLines(listPath)
                 .GetRandomElement();
