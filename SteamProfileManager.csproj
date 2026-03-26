@@ -14,8 +14,10 @@
     <PackageReference Include="NuciExtensions" Version="5.3.1" />
     <PackageReference Include="NuciLog" Version="1.1.2" />
     <PackageReference Include="NuciLog.Core" Version="2.6.0" />
-    <PackageReference Include="NuciWeb" Version="3.1.0" />
-    <PackageReference Include="NuciWeb.Steam" Version="1.4.5" />
+    <PackageReference Include="NuciWeb" Version="4.0.0" />
+    <PackageReference Include="NuciWeb.Automation" Version="1.0.0" />
+    <PackageReference Include="NuciWeb.Automation.Selenium" Version="1.0.0" />
+    <PackageReference Include="NuciWeb.Steam" Version="1.5.0" />
   </ItemGroup>
 
   <ItemGroup>

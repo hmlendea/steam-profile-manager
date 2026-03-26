@@ -7,7 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using NuciLog;
 using NuciLog.Configuration;
 using NuciLog.Core;
-using NuciWeb;
+using NuciWeb.Automation;
+using NuciWeb.Automation.Selenium;
 using NuciWeb.Steam;
 
 using OpenQA.Selenium;
@@ -31,7 +32,9 @@ namespace SteamProfileManager
         static void Main(string[] args)
         {
             LoadConfiguration();
-            webDriver = WebDriverInitialiser.InitialiseAvailableWebDriver(debugSettings.IsDebugMode, botSettings.PageLoadTimeout);
+            webDriver = WebDriverInitialiser.InitialiseAvailableWebDriver(
+                debugSettings.IsDebugMode,
+                botSettings.PageLoadTimeout);
 
             serviceProvider = CreateIOC();
             logger = serviceProvider.GetService<ILogger>();
@@ -70,14 +73,14 @@ namespace SteamProfileManager
                 profile.SetRandomProfileName();
             }
 
-            if (botSettings.RandomiseProfileIdentifier)
-            {
-                profile.SetRandomProfileIdentifier();
-            }
-
             if (botSettings.RandomiseProfilePicture)
             {
                 profile.SetRandomProfilePicture();
+            }
+
+            if (botSettings.RandomiseProfileIdentifier)
+            {
+                profile.SetRandomProfileIdentifier();
             }
 
             webDriver.Quit();
@@ -106,7 +109,7 @@ namespace SteamProfileManager
             .AddSingleton(loggerSettings)
             .AddSingleton<ILogger, NuciLogger>()
             .AddSingleton<IWebDriver>(s => webDriver)
-            .AddSingleton<IWebProcessor, WebProcessor>()
+            .AddSingleton<IWebProcessor, SeleniumWebProcessor>()
             .AddSingleton<ISteamProcessor, SteamProcessor>()
             .AddSingleton<IFileDownloader, FileDownloader>()
             .AddSingleton<IInfoGenerator, InfoGenerator>()
