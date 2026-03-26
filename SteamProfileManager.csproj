@@ -16,7 +16,7 @@
     <PackageReference Include="NuciLog.Core" Version="2.6.0" />
     <PackageReference Include="NuciWeb" Version="4.0.0" />
     <PackageReference Include="NuciWeb.Automation" Version="1.0.0" />
-    <PackageReference Include="NuciWeb.Automation.Selenium" Version="1.0.0" />
+    <PackageReference Include="NuciWeb.Automation.Selenium" Version="1.0.1" />
     <PackageReference Include="NuciWeb.Steam" Version="1.5.1" />
   </ItemGroup>
 
