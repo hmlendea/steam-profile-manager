@@ -24,7 +24,7 @@ namespace SteamProfileManager.Service
 
         public void LogIn()
         {
-            logger.Debug(
+            logger.Info(
                 MyOperation.LogIn,
                 OperationStatus.Started,
                 new LogInfo(MyLogInfoKey.Username, botSettings.SteamAccount.Username));
@@ -40,7 +40,7 @@ namespace SteamProfileManager.Service
 
         public void SetRandomProfileName()
         {
-            logger.Debug(
+            logger.Info(
                 MyOperation.SetProfileName,
                 OperationStatus.Started);
 
@@ -65,7 +65,7 @@ namespace SteamProfileManager.Service
 
         public void SetRandomProfileIdentifier()
         {
-            logger.Debug(
+            logger.Info(
                 MyOperation.SetProfileIdentifier,
                 OperationStatus.Started);
 
@@ -81,7 +81,7 @@ namespace SteamProfileManager.Service
 
         public void SetRandomProfilePicture()
         {
-            logger.Debug(
+            logger.Info(
                 MyOperation.SetProfilePicture,
                 OperationStatus.Started);
 
