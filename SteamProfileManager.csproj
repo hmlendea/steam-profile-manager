@@ -9,15 +9,15 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.5" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.5" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.9" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.9" />
     <PackageReference Include="NuciExtensions" Version="5.3.1" />
-    <PackageReference Include="NuciLog" Version="1.1.2" />
-    <PackageReference Include="NuciLog.Core" Version="2.6.0" />
+    <PackageReference Include="NuciLog" Version="1.2.0" />
+    <PackageReference Include="NuciLog.Core" Version="2.7.0" />
     <PackageReference Include="NuciWeb" Version="4.0.0" />
     <PackageReference Include="NuciWeb.Automation" Version="1.0.0" />
-    <PackageReference Include="NuciWeb.Automation.Selenium" Version="1.0.1" />
-    <PackageReference Include="NuciWeb.Steam" Version="1.5.2" />
+    <PackageReference Include="NuciWeb.Automation.Selenium" Version="1.0.2" />
+    <PackageReference Include="NuciWeb.Steam" Version="1.5.3" />
   </ItemGroup>
 
   <ItemGroup>
