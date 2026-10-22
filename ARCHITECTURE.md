@@ -314,15 +314,16 @@ The principal dependency rules are:
 
 ## ✅ Testing and Verification
 
-The repository currently has **no test projects**. Verification is manual:
+[SteamProfileManager.UnitTests](./SteamProfileManager.UnitTests/SteamProfileManager.UnitTests.csproj) uses NUnit 4 and Moq. Its unit tests verify that `InfoGenerator` returns profile names with exactly 12 ASCII alphanumeric characters and identifiers with exactly eight ASCII alphanumeric characters. Tests require no network access, browser, or Steam credentials.
+
+Execute the principal automated verification with:
 
 ```bash
-dotnet build --no-restore
-dotnet run --project SteamProfileManager.csproj
+dotnet test SteamProfileManager.slnx
 ```
 
 Material coverage gaps:
-- No unit tests for `InfoGenerator`, `FileDownloader`, `ProfileManager`
+- No unit tests for `FileDownloader` or `ProfileManager`
 - No integration tests for Steam automation flow
 - No configuration binding tests
 - No DI composition tests

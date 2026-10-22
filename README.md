@@ -29,6 +29,7 @@ Steam Profile Manager is a small .NET console application that automates selecte
 - [Privacy and Data](#-privacy-and-data)
   - [Data Locations](#data-locations)
 - [Project Structure](#-project-structure)
+  - [Projects and Packages](#projects-and-packages)
   - [Directories](#directories)
 - [GitHub Actions](#-github-actions)
   - [Dependencies](#dependencies)
@@ -120,7 +121,9 @@ https://example.com/avatar-3.webp
 
 ## 🏗️ Architecture
 
-Steam Profile Manager follows a layered architecture with dependency injection and interface-based contracts. See the [architecture documentation](./ARCHITECTURE.md) for the system context, principal components, runtime flows, ownership boundaries, dependencies, constraints, and extension points.
+Steam Profile Manager follows a layered architecture with dependency injection and interface-based contracts.
+
+See the [architecture documentation](./ARCHITECTURE.md) for the system context, principal components, runtime flows, ownership boundaries, dependencies, constraints, and extension points.
 
 ## 🛡️ Privacy and Data
 
@@ -175,7 +178,14 @@ For information on reporting security vulnerabilities, see [SECURITY.md](./SECUR
 
 ## 🗂️ Project Structure
 
-This is a single-project .NET console application.
+The solution contains a .NET console application and an NUnit unit-test project. Execute both unit tests from the repository root with `dotnet test SteamProfileManager.slnx`.
+
+### Projects and Packages
+
+| Project | Type | Purpose |
+|---------|------|---------|
+| [SteamProfileManager](./SteamProfileManager/SteamProfileManager.csproj) | .NET 10 console application | Steam profile management |
+| [SteamProfileManager.UnitTests](./SteamProfileManager.UnitTests/SteamProfileManager.UnitTests.csproj) | .NET 10 NUnit test project | Profile generation contract tests; includes Moq for dependency mocking |
 
 ### Directories
 
