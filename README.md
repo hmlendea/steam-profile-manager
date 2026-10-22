@@ -146,6 +146,12 @@ See the [contributing guidelines](./CONTRIBUTING.md) for details on how to repor
 
 See the [Code of Conduct](./CODE_OF_CONDUCT.md) for the standards of conduct expected in all project spaces.
 
+## 🔒 Security
+
+Steam Profile Manager follows a coordinated disclosure policy. Only the latest version distributed via GitHub Releases receives security maintenance.
+
+For information on reporting security vulnerabilities, see [SECURITY.md](./SECURITY.md).
+
 ## 📄 License
 
 This project is being distributed under the `GNU General Public License v3.0` or later.
