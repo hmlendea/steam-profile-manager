@@ -101,6 +101,32 @@ https://example.com/avatar-3.webp
 
 Steam Profile Manager follows a layered architecture with dependency injection and interface-based contracts. See the [architecture documentation](./ARCHITECTURE.md) for the system context, principal components, runtime flows, ownership boundaries, dependencies, constraints, and extension points.
 
+## 🛡️ Privacy and Data
+
+Steam Profile Manager is a self-hosted application that processes Steam account credentials and profile data locally. No data is transmitted to the project maintainers.
+
+For the detailed description of how the application handles privacy and personal data, see [PRIVACY.md](./PRIVACY.md).
+
+| Data | Purpose | Storage | Retention | Optional |
+|------|---------|---------|-----------|----------|
+| Steam username, password, TOTP key | Steam authentication | `appsettings.json` (local file) | Until manually deleted | No |
+| Profile name candidates | Profile name randomisation | `profileNamesList` file (local) | Until manually deleted | Yes |
+| Profile picture URLs | Profile picture randomisation | `profilePicturesList` file (local) | Until manually deleted | Yes |
+| Application logs | Operational visibility | `logfile.log` (local file) | Until manually deleted | Yes (configurable) |
+| Crash screenshots | Debugging | `crash.png` (local file) | Overwritten on each crash | Yes (configurable via `crashScreenshotFileName`) |
+| Temporary profile picture | Profile picture update | `profilePicture.png` (working directory) | Overwritten on each run | No |
+
+### Data Locations
+
+| Platform or Scope | Location | Contents |
+|-------------------|----------|----------|
+| All platforms | `appsettings.json` | Steam credentials, bot settings, debug settings, logger settings |
+| All platforms | `logfile.log` | Application logs (when file output enabled) |
+| All platforms | `crash.png` | Crash screenshot (when `crashScreenshotFileName` configured) |
+| All platforms | `profilePicture.png` | Temporary profile picture during update |
+| All platforms | `profileNamesList` path | Candidate profile names (when configured) |
+| All platforms | `profilePicturesList` path | Candidate profile picture URLs (when configured) |
+
 ## License
 
 This project is licensed under the `GNU General Public License v3.0` or later. See [LICENSE](./LICENSE) for details.
