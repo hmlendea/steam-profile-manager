@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET Core Launch (console)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/SteamProfileManager/bin/Debug/net10.0/SteamProfileManager",
+      "args": [],
+      "cwd": "${workspaceFolder}/SteamProfileManager",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    }
+  ]
+}
