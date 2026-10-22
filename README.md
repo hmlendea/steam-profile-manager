@@ -97,6 +97,10 @@ https://example.com/avatar-3.webp
 - A temporary file named `profilePicture.png` is created in the working directory when updating profile pictures.
 - Use this tool responsibly and in accordance with Steam's terms and policies.
 
+## 🏗️ Architecture
+
+Steam Profile Manager follows a layered architecture with dependency injection and interface-based contracts. See the [architecture documentation](./ARCHITECTURE.md) for the system context, principal components, runtime flows, ownership boundaries, dependencies, constraints, and extension points.
+
 ## License
 
 This project is licensed under the `GNU General Public License v3.0` or later. See [LICENSE](./LICENSE) for details.
