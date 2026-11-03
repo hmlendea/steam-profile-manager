@@ -125,6 +125,21 @@ Steam Profile Manager follows a layered architecture with dependency injection a
 
 See the [architecture documentation](./ARCHITECTURE.md) for the system context, principal components, runtime flows, ownership boundaries, dependencies, constraints, and extension points.
 
+## 📚 Documentation
+
+Comprehensive documentation is available in the [`docs/`](./docs/) directory:
+
+| Document | Description |
+|----------|-------------|
+| [INDEX.md](./docs/INDEX.md) | Documentation catalogue and navigation |
+| [architecture.md](./docs/architecture.md) | Detailed architecture |
+| [design-decisions.md](./docs/design-decisions.md) | Key architectural choices |
+| [components/](./docs/components/) | Component-level documentation |
+| [flows/](./docs/flows/) | Runtime flow documentation |
+| [api-reference/](./docs/api-reference/) | Configuration schema and service interfaces |
+| [operations/](./docs/operations/) | Deployment, monitoring, troubleshooting, maintenance |
+| [behaviour/](./docs/behaviour/) | Error handling and Steam interaction patterns |
+
 ## 🛡️ Privacy and Data
 
 Steam Profile Manager is a self-hosted application that processes Steam account credentials and profile data locally. No data is transmitted to the project maintainers.
