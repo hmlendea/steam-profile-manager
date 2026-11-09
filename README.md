@@ -1,5 +1,6 @@
 [![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/funding)
 [![Build Status](https://github.com/hmlendea/steam-profile-manager/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hmlendea/steam-profile-manager/actions/workflows/dotnet.yml)
+[![Security Scan](https://github.com/hmlendea/steam-profile-manager/actions/workflows/security.yml/badge.svg)](https://github.com/hmlendea/steam-profile-manager/actions/workflows/security.yml)
 [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/steam-profile-manager)](https://github.com/hmlendea/steam-profile-manager/releases/latest)
 [![License](https://img.shields.io/github/license/hmlendea/steam-profile-manager)](https://github.com/hmlendea/steam-profile-manager/blob/master/LICENSE)
 
@@ -215,6 +216,7 @@ The solution contains a .NET console application and an NUnit unit-test project.
 | Workflow | Purpose | What it does |
 |----------|---------|--------------|
 | [ dotnet.yml ](https://github.com/hmlendea/steam-profile-manager/blob/master/.github/workflows/dotnet.yml) | Continuous Integration | Restores dependencies, builds the project, and runs tests on push and pull requests to `master` |
+| [ security.yml ](https://github.com/hmlendea/steam-profile-manager/blob/master/.github/workflows/security.yml) | Security Scan | Checks for vulnerable NuGet packages and runs CodeQL analysis on push, pull requests, and weekly schedule |
 
 ### Dependencies
 
