@@ -171,6 +171,31 @@ options.AddArgument("--disable-dev-shm-usage");
 
 ---
 
+## Security Scanning Workflow
+
+The repository includes a GitHub Actions security workflow (`.github/workflows/security.yml`) that runs on:
+- Push to `master`
+- Pull requests to `master`
+- Weekly schedule (Sunday 00:00 UTC)
+
+### Workflow Actions
+
+| Step | Tool | Purpose |
+|------|------|---------|
+| Vulnerable package check | `dotnet list package --vulnerable --include-transitive` | Scans all NuGet dependencies (including transitive) for known vulnerabilities |
+| CodeQL analysis | `github/codeql-action` | Static analysis for C# security issues |
+
+### Permissions
+
+The workflow requires `security-events: write` permission to upload SARIF results to GitHub Code Scanning.
+
+### Viewing Results
+
+- **CodeQL alerts:** Security → Code scanning alerts
+- **Vulnerable packages:** Actions → Security Scan workflow run logs
+
+---
+
 ## Compliance Considerations
 
 ### GDPR

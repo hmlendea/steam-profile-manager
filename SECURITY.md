@@ -49,3 +49,11 @@ This project follows coordinated disclosure:
 2. A remediation plan is prepared and validated.
 3. Public disclosure is published after a fix, mitigation, or agreed risk decision is available.
 4. Credit is attributed in accordance with reporter preference and project policy.
+
+## 🔍 Automated Security Scanning
+
+This repository runs automated security scans on every push, pull request, and weekly schedule. The scan includes:
+- **Vulnerable NuGet packages** — `dotnet list package --vulnerable --include-transitive` scans all dependencies (including transitive) for known vulnerabilities
+- **CodeQL static analysis** — GitHub CodeQL analyses C# source code for security issues
+
+Results are published to the [Security](https://github.com/hmlendea/steam-profile-manager/security) tab and the [Actions](https://github.com/hmlendea/steam-profile-manager/actions/workflows/security.yml) workflow page.
