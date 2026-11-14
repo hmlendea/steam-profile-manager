@@ -217,6 +217,7 @@ The solution contains a .NET console application and an NUnit unit-test project.
 |----------|---------|--------------|
 | [ dotnet.yml ](https://github.com/hmlendea/steam-profile-manager/blob/master/.github/workflows/dotnet.yml) | Continuous Integration | Restores dependencies, builds the project, and runs tests on push and pull requests to `master` |
 | [ security.yml ](https://github.com/hmlendea/steam-profile-manager/blob/master/.github/workflows/security.yml) | Security Scan | Checks for vulnerable NuGet packages and runs CodeQL analysis on push, pull requests, and weekly schedule |
+| [ github-release.yml ](https://github.com/hmlendea/steam-profile-manager/blob/master/.github/workflows/github-release.yml) | GitHub Release | Builds self-contained release artefacts for the supported runtime identifiers and attaches them to the published GitHub release |
 
 ### Dependencies
 
