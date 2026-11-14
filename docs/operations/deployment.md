@@ -247,6 +247,21 @@ jobs:
       uses: github/codeql-action/analyze@v4
 ```
 
+**File:** `.github/workflows/github-release.yml`
+
+Triggered when a release is published. It derives the .NET version from `SteamProfileManager/SteamProfileManager.csproj`, strips the leading `v` from the release tag, runs the shared release script for every supported runtime identifier, and attaches the resulting `SteamProfileManager/bin/Release/steam-profile-manager_*` artefacts to the release.
+
+```yaml
+name: GitHub Release
+
+on:
+  release:
+    types: [ published ]
+
+permissions:
+  contents: write
+```
+
 ### Extending for Deployment
 
 Add deploy job:

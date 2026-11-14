@@ -351,6 +351,8 @@ Material coverage gaps:
 | Runtime Configuration | `appsettings.json` |
 | Release Script | `release.sh` |
 | CI Workflow | `.github/workflows/dotnet.yml` |
+| Security Workflow | `.github/workflows/security.yml` |
+| Release Workflow | `.github/workflows/github-release.yml` |
 
 ## 📚 Related Documentation
 
